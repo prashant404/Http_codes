@@ -1,7 +1,17 @@
-import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
-import { Container, Row, Col, Card, Alert, Button, Modal, Form } from 'react-bootstrap';
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Alert,
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
+import styles from "./List.module.css";
 
 const Lists = () => {
   const [lists, setLists] = useState([]);
@@ -14,14 +24,17 @@ const Lists = () => {
   useEffect(() => {
     const fetchLists = async () => {
       try {
-        const response = await axios.get('https://http-codes-api.onrender.com/api/lists', {
-          headers: { 'Authorization': `Bearer ${user.token}` }
-        });
+        const response = await axios.get(
+          "https://http-codes-api.onrender.com/api/lists",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
         setLists(response.data);
         setError(null);
       } catch (err) {
-        setError('Error fetching lists');
-        console.error('Error fetching lists:', err);
+        setError("Error fetching lists");
+        console.error("Error fetching lists:", err);
       }
     };
 
@@ -36,13 +49,16 @@ const Lists = () => {
 
   const handleDelete = async (listId) => {
     try {
-      await axios.delete(`https://http-codes-api.onrender.com/api/lists/${listId}`, {
-        headers: { 'Authorization': `Bearer ${user.token}` }
-      });
-      setLists(lists.filter(list => list._id !== listId));
+      await axios.delete(
+        `https://http-codes-api.onrender.com/api/lists/${listId}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      setLists(lists.filter((list) => list._id !== listId));
     } catch (err) {
-      console.error('Error deleting list:', err);  // Added detailed logging
-      alert('Error deleting list');
+      console.error("Error deleting list:", err); // Added detailed logging
+      alert("Error deleting list");
     }
   };
 
@@ -53,14 +69,24 @@ const Lists = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`https://http-codes-api.onrender.com/api/lists/${editingList._id}`, { name: editingList.name }, {
-        headers: { 'Authorization': `Bearer ${user.token}` }
-      });
-      setLists(lists.map(list => (list._id === editingList._id ? { ...list, name: editingList.name } : list)));
+      await axios.put(
+        `https://http-codes-api.onrender.com/api/lists/${editingList._id}`,
+        { name: editingList.name },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      setLists(
+        lists.map((list) =>
+          list._id === editingList._id
+            ? { ...list, name: editingList.name }
+            : list
+        )
+      );
       setShowEditModal(false);
     } catch (err) {
-      console.error('Error updating list:', err);
-      alert('Error updating list');
+      console.error("Error updating list:", err);
+      alert("Error updating list");
     }
   };
 
@@ -71,7 +97,7 @@ const Lists = () => {
 
   return (
     <Container className="mt-5">
-      <h1>Saved Lists</h1>
+      <h1 className="text-center">Saved Lists</h1>
       {error && <Alert variant="danger">{error}</Alert>}
       <Row>
         {lists.length > 0 ? (
@@ -79,22 +105,42 @@ const Lists = () => {
             <Col md={4} key={list._id} className="mb-3">
               <Card>
                 <Card.Body>
-                  <Card.Title onClick={() => handleExpand(list._id)} style={{ cursor: 'pointer' }}>
+                  <Card.Title
+                    onClick={() => handleExpand(list._id)}
+                    style={{ cursor: "pointer" }}
+                  >
                     {list.name}
                   </Card.Title>
                   {expandedListId === list._id && (
                     <Card.Text>
                       {list.imageLinks.length > 0 ? (
                         list.imageLinks.map((img, index) => (
-                          <img src={img} alt={`Saved image ${index}`} key={index} style={{ width: '100%' }} />
+                          <img
+                            src={img}
+                            alt={`Saved image ${index}`}
+                            key={index}
+                            style={{ width: "100%" }}
+                          />
                         ))
                       ) : (
                         <p>No images available</p>
                       )}
                     </Card.Text>
                   )}
-                  <Button variant="warning" onClick={() => handleEdit(list)}>Edit</Button>
-                  <Button variant="danger" onClick={() => handleDelete(list._id)}>Delete</Button>
+                  <Button
+                    className={`${styles.listbtn}`}
+                    variant="warning"
+                    onClick={() => handleEdit(list)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className={`${styles.listbtn}`}
+                    variant="danger"
+                    onClick={() => handleDelete(list._id)}
+                  >
+                    Delete
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -115,15 +161,19 @@ const Lists = () => {
               <Form.Control
                 type="text"
                 name="name"
-                value={editingList?.name || ''}
+                value={editingList?.name || ""}
                 onChange={handleEditChange}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>Close</Button>
-          <Button variant="primary" onClick={handleSaveEdit}>Save changes</Button>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSaveEdit}>
+            Save changes
+          </Button>
         </Modal.Footer>
       </Modal>
     </Container>

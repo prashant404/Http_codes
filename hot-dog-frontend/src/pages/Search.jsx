@@ -30,8 +30,13 @@ const Search = () => {
         "504", "505", "506", "507", "508", "510", "511",
       ];
 
-      const regex = new RegExp(`^${query.replace(/x/g, "\\d")}$`);
-      const filteredCodes = responseCodes.filter((code) => regex.test(code));
+      const codesArray = query.split(',').map(code => code.trim());
+      const regexes = codesArray.map(code => new RegExp(`^${code.replace(/x/g, "\\d")}$`));
+
+      const filteredCodes = responseCodes.filter((code) =>
+        regexes.some(regex => regex.test(code))
+      );
+
       const imageUrls = filteredCodes.map(
         (code) => `https://http.dog/${code}.jpg`
       );
@@ -70,17 +75,17 @@ const Search = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <Card className="mb-4">
+    <Container className="mt-4">
+      <Card className="mb-1">
         <Card.Body>
-          <h2 className="text-center mb-4">Search HTTP Status Dogs</h2>
+          <h2 className="text-center mb-4">Search HTTP</h2>
           <Form onSubmit={handleSearch}>
             <Form.Group controlId="formQuery">
               <Form.Label>Response Code or Pattern</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="text"
-                  placeholder="Enter response code or pattern (e.g., 2xx)"
+                  placeholder="Enter response codes or patterns (e.g., 2xx, 404)"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />

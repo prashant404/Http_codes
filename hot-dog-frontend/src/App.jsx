@@ -10,7 +10,7 @@ import { Container, Nav, Navbar, Button } from 'react-bootstrap';
 const AppContent = () => {
   const { user, logout, loading } = useContext(AuthContext);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className='text-center'>Page is Loading Please Wait...</div>;
 
   return (
     <Router>
