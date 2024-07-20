@@ -1,0 +1,7 @@
+body {
+  padding-top: 56px; /* Space for fixed navbar */
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}
