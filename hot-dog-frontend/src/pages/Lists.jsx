@@ -14,7 +14,7 @@ const Lists = () => {
   useEffect(() => {
     const fetchLists = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/lists', {
+        const response = await axios.get('https://http-codes-api.onrender.com/api/lists', {
           headers: { 'Authorization': `Bearer ${user.token}` }
         });
         setLists(response.data);
@@ -36,7 +36,7 @@ const Lists = () => {
 
   const handleDelete = async (listId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/lists/${listId}`, {
+      await axios.delete(`https://http-codes-api.onrender.com/api/lists/${listId}`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setLists(lists.filter(list => list._id !== listId));
@@ -53,7 +53,7 @@ const Lists = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/lists/${editingList._id}`, { name: editingList.name }, {
+      await axios.put(`https://http-codes-api.onrender.com/api/lists/${editingList._id}`, { name: editingList.name }, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setLists(lists.map(list => (list._id === editingList._id ? { ...list, name: editingList.name } : list)));

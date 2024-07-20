@@ -4,7 +4,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://http-codes-api.onrender.com/api',
 });
 
 api.interceptors.request.use(

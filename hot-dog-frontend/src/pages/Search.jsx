@@ -50,7 +50,7 @@ const Search = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/lists",
+        "https://http-codes-api.onrender.com/api/lists",
         {
           name: listName,
           responseCodes: images.map(
